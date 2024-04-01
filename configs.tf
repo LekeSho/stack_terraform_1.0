@@ -11,7 +11,7 @@
 data "template_file" "bootstrap" {
   template = file(format("%s/scripts/CLiXX_EFS_Bootsrap.tpl", path.module))
   vars={
-    GIT_REPO=local.db_creds.CliXX_Repo 
+    GIT_REPO=local.db_creds["CliXX_Repo"]
     MOUNT_POINT = local.db_creds.MOUNT_POINT
     EFS = aws_efs_file_system.efs_mount.id
     EFS_DNS_NAME = aws_efs_file_system.efs_mount.dns_name   
