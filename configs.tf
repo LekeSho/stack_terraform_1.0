@@ -11,7 +11,7 @@
 data "template_file" "bootstrap" {
   template = file(format("%s/scripts/CLiXX_EFS_Bootsrap.tpl", path.module))
   vars={
-    GIT_REPO=local.db_creds.GIT_REPO
+    GIT_REPO=local.db_creds.CliXX_Repo 
     MOUNT_POINT = local.db_creds.MOUNT_POINT
     EFS = aws_efs_file_system.efs_mount.id
     EFS_DNS_NAME = aws_efs_file_system.efs_mount.dns_name   
@@ -36,13 +36,13 @@ data "aws_db_snapshot" "DBSNAP" {
 data "template_file" "bootstrap2" {
   template = file(format("%s/scripts/BLOG_EFS_Bootsrap.tpl", path.module))
   vars={
-    GIT_REPO=local.db_creds.GIT_REPO
+    GIT_REPO=local.db_creds.MY_BLOG_Repo 
     MOUNT_POINT = local.db_creds.MOUNT_POINT
     EFS = aws_efs_file_system.efs_mount2.id
     EFS_DNS_NAME2 = aws_efs_file_system.efs_mount2.dns_name
     WP_CONFIG = local.db_creds.WP_CONFIG
-    DB_NAME = local.db_creds.DB_NAME
-    DB_USER = local.db_creds.DB_USER
+    DB_NAME = local.db_creds.BLOG_DB_NAME 
+    DB_USER = local.db_creds.BLOG_DB_USER
     DB_PASSWORD = local.db_creds.BLOG_DB_PASSWORD
     DB_EMAIL=local.db_creds.BLOG_DB_EMAIL
     load_balancer_dns2 = aws_lb.lb2.dns_name 
