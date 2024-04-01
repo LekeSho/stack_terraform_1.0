@@ -1,4 +1,12 @@
+locals {
+  db_creds = jsondecode(
+    data.aws_secretsmanager_secret_version.creds.secret_string
+  )
+ }
+
 #CODE FOR APP_SERVER
+
+
 
 ### Declare Key Pair ##########################
 resource "aws_key_pair" "Stack_KP" {
@@ -6,36 +14,6 @@ resource "aws_key_pair" "Stack_KP" {
   public_key = file(var.PATH_TO_PUBLIC_KEY)
 }
 
-#Adding the bootstrap and creating server
-# resource "aws_instance" "server" {
-#   depends_on = [aws_efs_mount_target.efs_mount]
-#   count = length(var.public_subnets)
-#   ami                     = var.ami
-#   instance_type           = var.instance_type
-#   #vpc_security_group_ids = [aws_security_group.stack-sg.id]
-#   #vpc_security_group_ids =   [aws_security_group.stack-sg-public.id] #remove due to error
-#   user_data               = data.template_file.bootstrap.rendered
-#   key_name                = aws_key_pair.Stack_KP.key_name
-#   #subnet_id              = element(var.subnets, 0)
-#   #subnet_id               = aws_subnet.Stack-public-subnet-1.id#remove due to conflict in ASG
-#   subnet_id = element(var.public_subnets, count.index)
- 
-#    launch_template { 
-#     id = aws_launch_template.TF-Stack-Template.id
-#     version = aws_launch_template.TF-Stack-Template.latest_version
-#   }
-#  root_block_device {
-#     volume_type           = "gp2"
-#     volume_size           = 30
-#     delete_on_termination = true
-#     encrypted= "true"
-#   }
-#    tags = {
-#    Name = "Application_Server_Aut"
-#    Environment = var.environment
-#    OwnerEmail = var.OwnerEmail
-# }
-# }
   
 #Creating EFS
 #note made changes to line 135 - added unique
@@ -55,20 +33,14 @@ value = aws_efs_file_system.efs_mount.tags["dns_name"]
 }
 
 resource "aws_efs_mount_target" "efs_mount" {
-  #count           = length(var.subnets)
   file_system_id   = aws_efs_file_system.efs_mount.id
-  #subnet_id       = var.subnets[count.index]
-  subnet_id       =  aws_subnet.Stack-public-subnet-1.id # OLD VPC STUFF
-  #security_groups = [aws_security_group.stack-sg.id]
+  subnet_id       =  aws_subnet.Stack-public-subnet-1.id 
   security_groups = [aws_security_group.stack-sg-public.id]
    
 }
 resource "aws_efs_mount_target" "efs_mount_a" {
-  #count           = length(var.subnets)
   file_system_id   = aws_efs_file_system.efs_mount.id
-  #subnet_id       = var.subnets[count.index]
-  subnet_id       =  aws_subnet.Stack-public-subnet-2.id # OLD VPC STUFF
-  #security_groups = [aws_security_group.stack-sg.id]
+  subnet_id       =  aws_subnet.Stack-public-subnet-2.id 
   security_groups = [aws_security_group.stack-sg-public.id]
    
 }
@@ -81,9 +53,7 @@ resource "aws_lb" "lb" {
   name               = "TF-LoadBalancerOne"
   internal           = false
   load_balancer_type = "application"
-  #subnets            = toset(var.subnets)
-   subnets           = [aws_subnet.Stack-public-subnet-1.id, aws_subnet.Stack-public-subnet-2.id]
-  #security_groups    = [aws_security_group.stack-sg.id]
+  subnets           = [aws_subnet.Stack-public-subnet-1.id, aws_subnet.Stack-public-subnet-2.id]
   security_groups = [aws_security_group.stack-sg-public.id]
   tags = {
     Name = "Stack_loadbalancer"
@@ -173,7 +143,7 @@ resource "aws_launch_configuration" "TF-Stack-Template" {
     delete_on_termination = true
   }
   ebs_block_device {
-    device_name           = "/dev/sdf"
+    device_name           = "/dev/sdg"
     volume_size           = 20
     volume_type           = "gp2"
     delete_on_termination = true
@@ -217,38 +187,7 @@ resource "aws_db_instance" "CliXX_DB" {
 
 
 #############Deploying App Server2######################## 
-#CODE FOR APP SERVER 2
 
-#Adding the bootstrap and creating  app server 2
-# resource "aws_instance" "server2" {
-#   depends_on = [aws_efs_mount_target.efs_mount2]
-#   ami                      = var.ami
-#   instance_type            = var.instance_type
-#   #vpc_security_group_ids  = [aws_security_group.stack-sg.id]
-#   #vpc_security_group_ids   =   [aws_security_group.stack-sg-public.id]
-#   user_data                = data.template_file.bootstrap2.rendered
-#   key_name                 = aws_key_pair.Stack_KP.key_name
-#   #subnet_id                = element(var.subnets, 0)
-#   #associate_public_ip_address = true
-  
-
-#   launch_template { 
-#     id = aws_launch_template.TF-Stack-Template2.id
-#     version = aws_launch_template.TF-Stack-Template2.latest_version
-#   }
-
-#  root_block_device {
-#     volume_type           = "gp2"
-#     volume_size           = 30
-#     delete_on_termination = true
-#     encrypted= "true"
-#   }
-#    tags = {
-#    Name = "Application_Server_Aut2"
-#    Environment = var.environment
-#    OwnerEmail = var.OwnerEmail
-# }
-# }
   
 #Creating EFS
   resource "aws_efs_file_system" "efs_mount2" {
@@ -267,11 +206,8 @@ value = aws_efs_file_system.efs_mount2.tags["dns_name"]
 }
 
 resource "aws_efs_mount_target" "efs_mount2" {
-  #count           = length(var.subnets)
   file_system_id   = aws_efs_file_system.efs_mount2.id
-  #subnet_id       = var.subnets[count.index]
   subnet_id       =  aws_subnet.Stack-public-subnet-1.id
-  #security_groups = [aws_security_group.stack-sg.id]
   security_groups = [aws_security_group.stack-sg-public.id]
   
   

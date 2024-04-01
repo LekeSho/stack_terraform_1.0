@@ -1,4 +1,5 @@
 #!/bin/bash -xe
+
 sudo su -
 yum update -y
 yum install -y nfs-utils
