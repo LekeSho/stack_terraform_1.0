@@ -4,18 +4,18 @@ pipeline {
         PATH = "${PATH}:${getTerraformPath()}"
     }
     stages{
-         stage('terraform init'){
-             steps {
-                 sh "terraform init"
+        //  stage('terraform init'){
+        //      steps {
+        //          sh "terraform init"
+        //  }
          }
-         }
-         stage('terraform plan'){
+         stage('terraform destroy'){
              steps {
-                 sh "terraform plan"
+                 sh "terraform destroy -auto-approve" 
          }
          }
     }
-}
+
 def getTerraformPath(){
         def tfHome= tool name: 'terraform-40', type: 'terraform'
         return tfHome
