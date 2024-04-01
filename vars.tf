@@ -1,6 +1,6 @@
-variable "AWS_ACCESS_KEY" {}
-variable "AWS_SECRET_KEY" {}
-variable "AWS_REGION" {}
+# variable "AWS_ACCESS_KEY" {}
+# variable "AWS_SECRET_KEY" {}
+# variable "AWS_REGION" {}
 
 
 variable "environment" {
@@ -70,31 +70,7 @@ variable "backup" {
 
 
 
-variable "ami" {}
 
-variable  "CliXX_Repo" {}
-
-variable "CliXX_MOUNT_POINT" {}
-
-variable "CliXX_WP_CONFIG" {}
-
-
-variable "MY_BLOG_Repo" {}
-
-variable "MY_BLOG_MOUNT_POINT" {}
-
- variable "MY_BLOG_WP_CONFIG" {}
-   
-
- 
- variable  "BLOG_DB_NAME" {}
- variable "BLOG_DB_USER" {}
- variable "BLOG_DB_PASSWORD" {}
- variable "BLOG_DB_EMAIL" {}
-
- variable "DB_NAME" {}
- variable "DB_USER" {}
- variable "PASSWORD"{}
 
 
  

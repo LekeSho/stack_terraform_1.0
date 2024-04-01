@@ -24,7 +24,7 @@ resource "aws_key_pair" "Stack_KP" {
     encrypted = "true"
     tags = {
     Name = "stack-efs"
-    dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
+    #dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
   }
 }
 
@@ -196,7 +196,7 @@ resource "aws_db_instance" "CliXX_DB" {
     encrypted = "true"
     tags = {
     Name = "stack-efs2"
-    dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
+    #dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
   }
 }
 
