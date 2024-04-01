@@ -20,9 +20,10 @@ pipeline {
          }
          stage('terraform apply'){
              steps {
-                 sh "terraform apply"
+                 sh "terraform apply -auto-approve"
          }
     }
+}
 }
 def getTerraformPath(){
         def tfHome= tool name: 'terraform-40', type: 'terraform'
