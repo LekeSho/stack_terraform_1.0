@@ -73,7 +73,6 @@ resource "aws_lb_target_group" "TF_STACKGROUP" {
   name     = "TF-stack-target-group"
   port     = 80
   protocol = "HTTP"
-  #vpc_id   = var.default_vpc_id
   vpc_id     = aws_vpc.Stack-VPC.id
   health_check {
     protocol               = "HTTP"
@@ -104,7 +103,7 @@ resource "aws_launch_configuration" "TF-Stack-Template" {
   depends_on    = [aws_efs_mount_target.efs_mount,
     aws_efs_mount_target.efs_mount_a,
     aws_db_instance.CliXX_DB]
-  image_id      = var.ami
+  image_id      = local.db_creds.ami
   instance_type = var.instance_type
   key_name      = aws_key_pair.Stack_KP.key_name
   user_data = base64encode(data.template_file.bootstrap.rendered)
@@ -279,7 +278,7 @@ resource "aws_launch_configuration" "TF-Stack-Template2" {
     aws_efs_mount_target.efs_mount2_a,
     aws_db_instance.MY_BLOG_DB
   ]
-  image_id      = var.ami
+  image_id      = local.db_creds.ami
   instance_type = var.instance_type
   key_name      = aws_key_pair.Stack_KP.key_name
   user_data = base64encode(data.template_file.bootstrap2.rendered)
