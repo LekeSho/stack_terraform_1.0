@@ -28,9 +28,9 @@ resource "aws_key_pair" "Stack_KP" {
   }
 }
 
-output "efs_dns_name" {
-value = aws_efs_file_system.efs_mount.tags["dns_name"]
-}
+# output "efs_dns_name" {
+# value = aws_efs_file_system.efs_mount.tags["dns_name"]
+# }
 
 resource "aws_efs_mount_target" "efs_mount" {
   file_system_id   = aws_efs_file_system.efs_mount.id
@@ -200,9 +200,9 @@ resource "aws_db_instance" "CliXX_DB" {
   }
 }
 
-output "efs_dns_name2" {
-value = aws_efs_file_system.efs_mount2.tags["dns_name"]
-}
+# output "efs_dns_name2" {
+# value = aws_efs_file_system.efs_mount2.tags["dns_name"]
+# }
 
 resource "aws_efs_mount_target" "efs_mount2" {
   file_system_id   = aws_efs_file_system.efs_mount2.id
