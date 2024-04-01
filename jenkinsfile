@@ -8,14 +8,14 @@ pipeline {
         //      steps {
         //          sh "terraform init"
         //  }
-         }
+         //}
          stage('terraform destroy'){
              steps {
                  sh "terraform destroy -auto-approve" 
          }
          }
     }
-
+}
 def getTerraformPath(){
         def tfHome= tool name: 'terraform-40', type: 'terraform'
         return tfHome
