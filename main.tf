@@ -24,13 +24,10 @@ resource "aws_key_pair" "Stack_KP" {
     encrypted = "true"
     tags = {
     Name = "stack-efs"
-    #dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
+    
   }
 }
 
-# output "efs_dns_name" {
-# value = aws_efs_file_system.efs_mount.tags["dns_name"]
-# }
 
 resource "aws_efs_mount_target" "efs_mount" {
   file_system_id   = aws_efs_file_system.efs_mount.id
@@ -175,7 +172,6 @@ resource "aws_db_instance" "CliXX_DB" {
   db_name                = ""
   snapshot_identifier    = data.aws_db_snapshot.DBSNAP.id
   skip_final_snapshot    = true
-  #vpc_security_group_ids = ["${aws_security_group.stack-sg.id}"]
   vpc_security_group_ids = ["${aws_security_group.stack-sg-private.id}"]
   db_subnet_group_name  = aws_db_subnet_group.db-subnet-group.name 
 
@@ -196,13 +192,11 @@ resource "aws_db_instance" "CliXX_DB" {
     encrypted = "true"
     tags = {
     Name = "stack-efs2"
-    #dns_name = "efs.${var.AWS_REGION}.amazonaws.com"
+    
   }
 }
 
-# output "efs_dns_name2" {
-# value = aws_efs_file_system.efs_mount2.tags["dns_name"]
-# }
+
 
 resource "aws_efs_mount_target" "efs_mount2" {
   file_system_id   = aws_efs_file_system.efs_mount2.id
@@ -316,7 +310,7 @@ resource "aws_launch_configuration" "TF-Stack-Template2" {
     delete_on_termination = true
   }
   ebs_block_device {
-    device_name           = "/dev/sdf"
+    device_name           = "/dev/sdg"
     volume_size           = 20
     volume_type           = "gp2"
     delete_on_termination = true
